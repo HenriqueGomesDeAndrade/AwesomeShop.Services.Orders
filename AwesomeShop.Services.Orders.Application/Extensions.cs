@@ -1,4 +1,5 @@
 ﻿using AwesomeShop.Services.Orders.Application.Commands.Handler;
+using AwesomeShop.Services.Orders.Application.Subscribers;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,6 +17,19 @@ namespace AwesomeShop.Services.Orders.Application
             services.AddMediatR(typeof(AddOrderHandler).Assembly);
 
             return services;
+        }
+
+        public static IServiceCollection AddSubscribers(this IServiceCollection services)
+        {
+            services.AddHostedService<PaymentAcceptedSubscriber>();
+
+            return services;
+        }
+
+
+        public static string ToDashCase(this string text)
+        {
+            return "";
         }
     }
 }

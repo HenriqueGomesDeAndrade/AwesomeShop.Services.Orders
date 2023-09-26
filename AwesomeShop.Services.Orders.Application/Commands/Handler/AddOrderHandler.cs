@@ -1,4 +1,5 @@
 ﻿using AwesomeShop.Services.Orders.Core.Repositories;
+using AwesomeShop.Services.Orders.Infrastructure.MessageBus;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,12 @@ namespace AwesomeShop.Services.Orders.Application.Commands.Handler
     public class AddOrderHandler : IRequestHandler<AddOrder, Guid>
     {
         private readonly IOrderRepository _orderRepository;
-        public AddOrderHandler(IOrderRepository orderRepository)
+
+        private readonly IMessageBusClient _messageBusClient;
+        public AddOrderHandler(IOrderRepository orderRepository, IMessageBusClient messageBusClient)
         {
             _orderRepository = orderRepository;
+            _messageBusClient = messageBusClient;
         }
 
         public async Task<Guid> Handle(AddOrder request, CancellationToken cancellationToken)
@@ -22,6 +26,12 @@ namespace AwesomeShop.Services.Orders.Application.Commands.Handler
             var order = request.ToEntity();
 
             await _orderRepository.AddAsync(order);
+
+            foreach (var @event in order.Events)
+            {
+                var routingKey = @event.GetType().Name.ToDashCase();
+                _messageBusClient.Publish(@event, routingKey, "order-service");
+            }
 
             return order.Id;
         }

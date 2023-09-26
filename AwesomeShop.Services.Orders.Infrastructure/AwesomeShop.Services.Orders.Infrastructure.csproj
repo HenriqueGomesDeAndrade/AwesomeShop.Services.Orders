@@ -13,10 +13,6 @@
       <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="MessageBus\" />
-    </ItemGroup>
-
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
     </PropertyGroup>
