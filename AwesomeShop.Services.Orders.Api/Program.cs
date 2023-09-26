@@ -1,4 +1,5 @@
 using AwesomeShop.Services.Orders.Application;
+using AwesomeShop.Services.Orders.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHandlers();
+builder.Services.AddMongo();
+builder.Services.AddRepositories();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

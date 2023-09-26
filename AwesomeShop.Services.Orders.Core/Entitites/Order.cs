@@ -20,6 +20,7 @@ namespace AwesomeShop.Services.Orders.Core.Entitites
             PaymentAddress = paymentAddress;
             PaymentInfo = paymentInfo;
             Items = items;
+            Status = OrderStatus.Started;
 
             CreatedAt = DateTime.Now;
 
