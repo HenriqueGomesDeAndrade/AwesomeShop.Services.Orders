@@ -15,6 +15,7 @@ builder.Services.AddRepositories();
 builder.Services.AddHttpClient();
 builder.Services.AddMessageBus();
 builder.Services.AddSubscribers();
+builder.Services.AddConsultConfig(builder.Configuration);
 
 var app = builder.Build();
 
@@ -26,6 +27,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseConsul();
 
 app.UseAuthorization();
 
