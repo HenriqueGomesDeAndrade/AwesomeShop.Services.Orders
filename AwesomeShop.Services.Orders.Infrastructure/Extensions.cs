@@ -1,4 +1,5 @@
 ﻿using AwesomeShop.Services.Orders.Core.Repositories;
+using AwesomeShop.Services.Orders.Infrastructure.CacheStorage;
 using AwesomeShop.Services.Orders.Infrastructure.MessageBus;
 using AwesomeShop.Services.Orders.Infrastructure.Persistence;
 using AwesomeShop.Services.Orders.Infrastructure.Persistence.Repositories;
@@ -101,6 +102,19 @@ namespace AwesomeShop.Services.Orders.Infrastructure
                 consulClient.Agent.ServiceDeregister(registration.ID).ConfigureAwait(true);
             });
             return app;
+        }
+
+        public static IServiceCollection AddRedisCache(this IServiceCollection services)
+        {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.InstanceName = "CustomersCache";
+                options.Configuration = "localhost:6379";
+            });
+
+            services.AddTransient<ICacheService, CacheService>();
+
+            return services;
         }
     }
 }
